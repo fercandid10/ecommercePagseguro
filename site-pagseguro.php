@@ -8,6 +8,20 @@ use \Hcode\pagSeguro\Transporter;
 use \Hcode\Model\Order;
 
 
+$app->post("/payment/credit", function(){
+
+	User::verifyLogin(false);
+
+	$order = new Order();
+	$order->getFromSession();
+	$address = $order->getAddress();
+
+	$cart = $order->getCart();
+
+	
+});
+
+
 $app->get('/payment', function(){
 
 
