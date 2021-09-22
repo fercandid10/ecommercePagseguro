@@ -54,9 +54,6 @@ class Sender {
         $email = $dom->createElement("email", $this->email);
         $email = $sender->appendChild($email);
 
-        $email = $dom->createElement("email", $this->email);
-        $email = $sender->appendChild($email);
-
         $bornDate = $dom->createElement("bornDate", $this->bornDate->format("d/m/Y"));
         $bornDate = $sender->appendChild($bornDate);
 
