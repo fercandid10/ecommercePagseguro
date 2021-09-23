@@ -2,6 +2,11 @@
 
 namespace Hcode\pagSeguro\CreditCard;
 
+use Exception;
+use DOMDocument;
+use DOMElement;
+use Hcode\pagSeguro\Config;
+
 class Installment {
 
     private $quantity;

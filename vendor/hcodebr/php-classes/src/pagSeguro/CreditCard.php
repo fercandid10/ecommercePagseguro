@@ -1,6 +1,11 @@
 <?php
 
 namespace Hcode\pagSeguro;
+use Exception;
+use DOMDocument;
+use DOMElement;
+use Hcode\pagSeguro\CreditCard\Document;
+use Hcode\pagSeguro\CreditCard\Holder;
 
 
 class CreditCard {

@@ -2,6 +2,10 @@
 
 namespace Hcode\pagSeguro;
 
+use Exception;
+use DOMDocument;
+use DOMElement;
+
 
 class Address {
 
