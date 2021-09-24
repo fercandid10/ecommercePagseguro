@@ -84,7 +84,9 @@ $app->post("/payment/credit", function(){
 
 	$payment->setCreditCard($creditCard);
 
-	$dom = new DOMDocument();
+	Transporter::sendTransaction($payment);
+
+	echo json_encode(['success'=>true]);
 
 
 });
