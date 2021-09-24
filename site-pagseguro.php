@@ -18,6 +18,21 @@ use \Hcode\pagSeguro\Item;
 use \Hcode\pagSeguro\Payment;
 use \Hcode\pagSeguro\Bank;
 
+$app->get("/payment/success/debit", function(){
+
+	User::verifyLogin(false);
+
+	$order = new Order();
+
+	$order->getFromSession();
+	$order->get((int)$order->getidorder());
+
+	$page = new Page();
+	$page->setTpl('payment-success-debit', [
+		'order'=>$order->getValues()
+	]);
+});
+
 $app->get("/payment/success/boleto", function(){
 
 	User::verifyLogin(false);
@@ -28,7 +43,7 @@ $app->get("/payment/success/boleto", function(){
 	$order->get((int)$order->getidorder());
 
 	$page = new Page();
-	$page->setTpl('payment-boleto', [
+	$page->setTpl('payment-success-boleto', [
 		'order'=>$order->getValues()
 	]);
 });
