@@ -471,6 +471,15 @@ scripts.push(function(){
                     $.param(params),
                     function(r){
 
+                        var response = JSON.parse(r);
+
+                        if (response.success){
+
+                            window.location.href = "/payment/success";
+                        }else {
+                            showError("Nao foi possivel efetuar o pagamento!")
+                        }
+                        
                     }
                 )
             },
