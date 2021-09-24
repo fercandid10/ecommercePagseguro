@@ -18,6 +18,14 @@ use \Hcode\pagSeguro\Item;
 use \Hcode\pagSeguro\Payment;
 use \Hcode\pagSeguro\Bank;
 
+$app->post('/payment/notification', function(){
+
+
+
+	Transporter::getNotification($_POST['notificationCode'], $_POST['notificationType']);
+} );
+
+
 $app->get("/payment/success/debit", function(){
 
 	User::verifyLogin(false);
