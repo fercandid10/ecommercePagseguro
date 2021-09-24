@@ -436,6 +436,44 @@ scripts.push(function(){
         return true;    
     }
 
+    $("#form-debit").on("submit", function(e){
+        
+        e.preventDefault();
+        if (!isValidCPF($("#form-debit [name=cpf]").val())) {
+            showError("Este numero de CPF nao é valido");
+            return false;
+        }
+
+        var formData = $(this).serializeArray();
+
+        var params = {};
+
+        $.each(formData, function(index, field){
+
+            params[field.name] = field.value;
+        });
+
+        params.hash = PagSeguroDirectPayment.getSenderHash();
+
+            $.post("/payment/debit",
+                $.param(params),
+                function(r){
+
+                    var response = JSON.parse(r);
+
+                    if (response.success){
+
+                        window.location.href = "/payment/success/debit";
+                    }else {
+                        showError("Nao foi possivel efetuar o pagamento!")
+                    }
+                        
+                }
+            )
+
+
+    });
+
     $("#form-boleto").on("submit", function(e){
         
         e.preventDefault();
@@ -463,7 +501,7 @@ scripts.push(function(){
 
                     if (response.success){
 
-                        window.location.href = "/payment/boleto";
+                        window.location.href = "/payment/success/boleto";
                     }else {
                         showError("Nao foi possivel efetuar o pagamento!")
                     }
