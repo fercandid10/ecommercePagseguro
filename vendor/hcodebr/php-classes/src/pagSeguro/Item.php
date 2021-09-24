@@ -54,19 +54,23 @@ class Item {
         $item = $dom->createElement("item");
         $item = $dom->appendChild($item);
         
+  
        
 
         $amount = $dom->createElement("amount", number_format($this->amount, 2, ".", ""));
-        $amount = $installment->appendChild($amount);
+        $amount = $item->appendChild($amount);
+
+        $id = $dom->createElement("id", $this->id);
+        $id = $item->appendChild($id);
 
         $quantity = $dom->createElement("quantity", $this->quantity);
-        $quantity = $installment->appendChild($quantity);
+        $quantity = $item->appendChild($quantity);
 
         $description = $dom->createElement("description", $this->description);
-        $description = $installment->appendChild($description);
+        $description = $item->appendChild($description);
 
     
-        return $installment;
+        return $item;
 
     }
 
