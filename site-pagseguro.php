@@ -17,6 +17,22 @@ use \Hcode\pagSeguro\CreditCard\Installment;
 use \Hcode\pagSeguro\Item;
 use \Hcode\pagSeguro\Payment;
 
+$app->get("/payment/success/boleto", function(){
+
+	User::verifyLogin(false);
+
+	$order = new Order();
+
+	$order->getFromSession();
+	$order->get((int)$order->getidorder());
+
+	$page = new Page();
+	$page->setTpl('payment-boleto', [
+		'order'=>$order->getValues()
+	]);
+});
+
+
 $app->get("/payment/success", function(){
 
 	User::verifyLogin(false);
@@ -103,6 +119,65 @@ $app->post("/payment/credit", function(){
 
 
 });
+
+$app->post("/payment/boleto", function(){
+
+	User::verifyLogin(false);
+
+	$order = new Order();
+	$order->getFromSession();
+	$order->get((int)$order->getidorder());
+	$address = $order->getAddress();
+
+	$cart = $order->getCart();
+
+	$cpf = new Document(Document::CPF, $_POST['cpf']);
+
+	$phone = new Phone($_POST['ddd'], $_POST['phone']);
+
+	$shippingAddress = new Address(
+		$address->getdesaddress(),
+		$address->getdesnumber(),
+		$address->getdescomplement(),
+		$address->getdesdistrict(),
+		$address->getdeszipcode(),
+		$address->getdescity(),
+		$address->getdesstate(),
+		$address->getdescountry()
+		
+	);
+
+	$birthDate = new DateTime($_POST['birth']);
+
+	$sender = new Sender($order->getdesperson(), $cpf, $birthDate, $phone, $order->getdesemail(), $_POST['hash'] );
+
+
+	$shipping = new Shipping($address, (float)$cart->getvlfreight(), Shipping::PAC);
+
+
+	$payment = new Payment($order->getidorder(), $sender, $shipping);
+
+	foreach($cart->getProducts() as $product){
+		
+		$item = new Item(
+			(int)$product['idproduct'],
+			$product['desproduct'],
+			(float)$product['vlprice'],
+			(int)$product['nrqtd']
+		);
+
+		$payment->addItem($item);
+	}
+
+	$payment->setBoleto();
+
+	Transporter::sendTransaction($payment);
+
+	echo json_encode(['success'=>true]);
+
+
+});
+
 
 
 $app->get('/payment', function(){
